@@ -40,7 +40,7 @@
         <Tinymce ref="editor" :height="400" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">确定</el-button>
+        <el-button type="primary" @click="onSubmit, dataPost()">确定</el-button>
         <el-button @click="onCancel">取消</el-button>
       </el-form-item>
     </el-form>
@@ -64,13 +64,17 @@ export default {
           label: '实验室新闻'
         }, {
           value: '选项2',
-          label: '国内动态'
+          label: '国内动态-国内信息化教育'
         }, {
           value: '选项3',
+          label: '国外动态-国内实时活动资讯'
+        }, {
+          value: '选项4',
           label: '国外动态'
         }],
         value: ''
-      }
+      },
+      message: ''
     }
   },
   methods: {
@@ -82,6 +86,15 @@ export default {
         message: 'cancel!',
         type: 'warning'
       })
+    },
+    dataPost() {
+      var that = this
+      this.$axios
+        .post('http://localhost:8083/News/informationGet', that.form)
+        .then(function(response) {
+          that.message = response.data
+          alert(response.data)
+        })
     }
   }
 }
