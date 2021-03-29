@@ -51,12 +51,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <Pagination :total="9" @pagination="getList" />
   </div>
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import { getList, getManageList } from '@/api/table'
+import Pagination from '@/components/Pagination'
 export default {
+  components: {
+    Pagination
+  },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -90,6 +95,11 @@ export default {
     },
     creatNews() {
       this.$router.push('/news/createform')
+    },
+    getList(parm) {
+      getManageList(parm).then(res => {
+        console.log(res)
+      })
     }
   }
 }
