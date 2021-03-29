@@ -71,6 +71,7 @@
         </template>
       </el-table-column>
     </el-table>
+    <Pagination :total="9" @pagination="getList" />
   </div>
 </template>
 
@@ -78,6 +79,9 @@
 // import { getList } from '@/api/table'
 // import { get } from '@/utils/request1'
 export default {
+  // components: {
+  //   Pagination
+  // },
   filters: {
     statusFilter(status) {
       const statusMap = {
