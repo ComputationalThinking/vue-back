@@ -21,7 +21,7 @@
     >
       <el-table-column align="center" label="序号" width="80">
         <template slot-scope="scope">
-          {{ scope.$index }}
+          {{ scope.$index+1 }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="新闻ID" width="80">
@@ -50,38 +50,45 @@
           <span>{{ scope.row.time }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="{row,$index}">
+      <el-table-column
+        label="操作"
+        align="center"
+        width="230"
+        class-name="small-padding fixed-width"
+      >
+        <template slot-scope="{ row, $index }">
           <router-link
             :to="{
-              path: '/news/form/'+row.id,
+              path: '/news/form/' + row.id,
               query: {
                 id: row.id,
                 operate: 2
               }
             }"
           >
-            <el-button type="primary" size="mini">
-              编辑
-            </el-button>
+            <el-button type="primary" size="mini">编辑</el-button>
           </router-link>
-          <el-button size="mini" type="danger" @click="handleDelete(row,$index,row.id)">
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(row, $index, row.id)"
+          >
             删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <Pagination :total="9" @pagination="getList" />
+    <Pagination v-if="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
   </div>
 </template>
 
 <script>
 // import { getList } from '@/api/table'
 // import { get } from '@/utils/request1'
+import { getNewsList } from '@/api/table'
+import Pagination from '@/components/Pagination'
 export default {
-  // components: {
-  //   Pagination
-  // },
+  components: { Pagination },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -94,6 +101,7 @@ export default {
   },
   data() {
     return {
+      total: 0,
       list: null,
       listLoading: true,
       message: [
@@ -107,19 +115,24 @@ export default {
         }
       ],
       type: ['实验室动态', '国内信息化教育动态', '国内动态', '国外动态'],
-      warn: ''
+      warn: '',
+      listQuery: {
+        page: 1,
+        limit: 10
+      }
     }
   },
   created() {
     // this.fetchData()
     this.listLoading = true
-    var that = this
-    this.$axios
-      .get('http://localhost:8083/News/FindAll')
-      .then(function(response) {
-        that.message = response.data
-        that.listLoading = false
-      })
+    this.getList()
+    // var that = this
+    // this.$axios
+    //   .get('http://localhost:8083/News/FindAll')
+    //   .then(function(response) {
+    //     that.message = response.data
+    //     that.listLoading = false
+    //   })
   },
   methods: {
     // fetchData() {
@@ -129,6 +142,13 @@ export default {
     //     this.listLoading = false
     //   })
     // },
+    getList() {
+      getNewsList(this.listQuery).then(res => {
+        this.listLoading = false
+        this.total = res.data.data.total
+        this.message = res.data.data.result
+      })
+    },
     editNews(id) {
       console.log(id)
       this.$router.push('/news/form/' + id)
@@ -141,25 +161,27 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        var that = this
-        this.listLoading = true
-        this.$axios
-          .get('http://localhost:8083/News/DeleteID?id=' + id)
-          .then(function(response) {
-            that.message = response.data
-            that.listLoading = false
-          })
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
       })
+        .then(() => {
+          var that = this
+          this.listLoading = true
+          this.$axios
+            .get('http://localhost:8083/News/DeleteID?id=' + id)
+            .then(function(response) {
+              that.message = response.data
+              that.listLoading = false
+            })
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     }
   }
 }

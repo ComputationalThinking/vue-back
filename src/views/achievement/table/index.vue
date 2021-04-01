@@ -46,12 +46,15 @@
         </template>
       </el-table-column>
     </el-table>
+    <Pagination v-if="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
   </div>
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import { getAchieveList } from '@/api/table'
+import Pagination from '@/components/Pagination'
 export default {
+  components: { Pagination },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -64,19 +67,25 @@ export default {
   },
   data() {
     return {
+      total: 0,
       list: null,
-      listLoading: true
+      listLoading: true,
+      listQuery: {
+        page: 1,
+        limit: 10
+      }
     }
   },
   created() {
-    this.fetchData()
+    this.listLoading = true
+    this.getList()
   },
   methods: {
-    fetchData() {
-      this.listLoading = true
-      getList().then(response => {
-        this.list = response.data.items
+    getList() {
+      getAchieveList(this.listQuery).then(res => {
         this.listLoading = false
+        this.total = res.data.data.total
+        this.list = res.data.data.result
       })
     },
     editCarousel(id) {

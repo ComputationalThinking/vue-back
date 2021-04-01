@@ -15,3 +15,27 @@ export function getManageList(params) {
     params
   })
 }
+
+export function getNewsList(params) {
+  return request1({
+    url: '/News/getPageData',
+    method: 'get',
+    params
+  })
+}
+
+export function getMemberList(params) {
+  return request1({
+    url: '/member/getPageData',
+    method: 'get',
+    params
+  })
+}
+
+export function getAchieveList(params) {
+  return request1({
+    url: '/achieve/getPageData',
+    method: 'get',
+    params
+  })
+}
