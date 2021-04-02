@@ -17,6 +17,9 @@ import '@/permission' // permission control
 
 import 'normalize.css/normalize.css'
 import '@/assets/style/reset.css'
+import axios from 'axios'
+Vue.prototype.$axios = axios
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
 
 // let echarts = require('echarts/lib/echarts')
 

@@ -29,6 +29,7 @@ import LineChart from './components/LineChart'
 import MemberPie from './components/MemberPie'
 import Histogram from './components/Histogram'
 import PieChart from './components/PieChart'
+import request from '@/utils/request1'
 
 const lineChartData = {
   newVisitis: {
@@ -61,6 +62,14 @@ export default {
     return {
       lineChartData: lineChartData.newVisitis
     }
+  },
+  created() {
+    request({
+      url: '/manager/information',
+      method: 'get'
+    }).then(res => {
+      console.log(res)
+    })
   },
   methods: {
     handleSetLineChartData(type) {

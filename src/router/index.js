@@ -188,14 +188,6 @@ export const constantRoutes = [
     meta: { title: '实验室信息管理', icon: 'el-icon-s-help' },
     alwaysShow: true,
     children: [
-      // 实验室研究方向和人才需求
-      {
-        path: 'form',
-        name: 'Form',
-        component: () => import('@/views/labintro/research direction/form/index'),
-        meta: { title: '实验室介绍', icon: 'education' }
-      },
-
       {
         path: 'character',
         name: 'Character',
