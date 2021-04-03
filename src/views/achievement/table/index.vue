@@ -24,7 +24,7 @@
           {{ scope.$index+1 }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="成果信息编号" width="130">
+      <el-table-column align="center" label="成果信息编号ID" width="130">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
