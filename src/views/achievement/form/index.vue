@@ -46,7 +46,7 @@
             <el-input v-model="form.hot" />
           </el-form-item>
         </el-col>
-        <el-col :span="2" class="line" />
+        <el-col :span="6" class="line" />
       </el-row>
       <el-form-item prop="content" style="margin-bottom: 30px;" label="成果介绍内容">
         <Tinymce id="tinymceId" ref="editor" :height="400" :value="content" name="tinymac" />
@@ -155,16 +155,6 @@ export default {
     },
     getContent() {
       this.form.content = window.tinymce.get('tinymceId').getContent()
-    },
-    handleRemove(file) {
-      console.log(file)
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
-    },
-    handleDownload(file) {
-      console.log(file)
     },
     dataPost() {
       this.$confirm('确认是否编辑完毕?', '提示', {
