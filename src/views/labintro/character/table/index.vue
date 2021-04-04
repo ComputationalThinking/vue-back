@@ -107,7 +107,6 @@
 <script>
 import { getMemberList } from '@/api/table'
 import Pagination from '@/components/Pagination'
-// import { getList } from '@/api/table'
 export default {
   components: { Pagination },
   filters: {
@@ -137,8 +136,8 @@ export default {
           area: ''
         }
       ],
-      IdenType: ['老师', '学生'],
-      AreaType: ['重要', '普通'],
+      IdenType: ['学生', '老师'],
+      AreaType: ['普通', '重要'],
       warn: '',
       listQuery: {
         page: 1,

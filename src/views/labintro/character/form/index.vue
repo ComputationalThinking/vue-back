@@ -59,10 +59,10 @@
           <el-input v-model="form.role" />
         </el-form-item>
         <el-form-item label="电话">
-          <el-input v-model="form.title" />
+          <el-input v-model="form.tel" />
         </el-form-item>
         <el-form-item label="email">
-          <el-input v-model="form.title" type="email" />
+          <el-input v-model="form.email" />
         </el-form-item>
         <!-- <el-form-item>
           <el-upload
@@ -107,10 +107,10 @@ export default {
         content: '',
         tel: '',
         email: '',
-        // img_boolean: 0,
-        // img_src: '',
         role: '',
         area: 0
+        // img_boolean: 0,
+        // img_src: '',
       },
       options1: {
         value1: '',
@@ -134,8 +134,8 @@ export default {
         }
         ]
       },
-      IdenType: ['老师', '学生'],
-      AreaType: ['重要', '普通'],
+      IdenType: ['学生', '老师'],
+      AreaType: ['普通', '重要'],
       value1: '',
       value2: '',
       tinymceId: ''
@@ -168,10 +168,36 @@ export default {
       this.form.identity = index
     },
     roleChoice(index) {
-      this.form.identity = index
+      this.form.role = index
     },
     getContent() {
       this.form.content = window.tinymce.get('tinymceId').getContent()
+    },
+    getValue1(value1) {
+      switch (value1) {
+        case '选项1':
+          this.form.identity = 1
+          break
+        case '选项2':
+          this.form.identity = 0
+          break
+        // default :
+        //   this.form.identity = 1
+        //   break
+      }
+    },
+    getValue2(value2) {
+      switch (value2) {
+        case '选项1':
+          this.form.area = 1
+          break
+        case '选项2':
+          this.form.area = 0
+          break
+        // default :
+        //   this.form.area = 1
+        //   break
+      }
     },
     dataPost() {
       this.$confirm('确认是否编辑完毕?', '提示', {
@@ -182,8 +208,9 @@ export default {
         var that = this
         this.listLoading = true
         if (this.operate === 2) {
-          this.form.time = this.date1 + 'T' + this.date2
-          this.getValue(this.value)
+          // this.form.time = this.date1 + 'T' + this.date2
+          this.getValue1(this.value1)
+          this.getValue2(this.value2)
           this.getContent()
           this.$axios
             .post('http://localhost:8083/member/memberUpdataID', this.form)
@@ -196,8 +223,9 @@ export default {
             message: '修改成功!'
           })
         } else {
-          this.form.time = this.date1 + 'T' + this.date2
-          this.getValue(this.value)
+          // this.form.time = this.date1 + 'T' + this.date2
+          this.getValue1(this.value1)
+          this.getValue2(this.value2)
           this.getContent()
           this.$axios
             .post('http://localhost:8083/member/memberAddID', this.form)
@@ -222,6 +250,7 @@ export default {
         message: 'cancel!',
         type: 'warning'
       })
+      this.$router.go(-1)
     }
     // handleAvatarSuccess(res, file) {
     //   this.imageUrl = URL.createObjectURL(file.raw)
