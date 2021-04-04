@@ -1,6 +1,16 @@
 <template>
   <div class="app-container">
-    <div align="right" @click="creatCarousel"><el-button type="success">新建成果介绍</el-button></div>
+    <router-link
+      :to="{
+        path: '/achievement/createform',
+        query: {
+          id: 0,
+          operate: 0
+        }
+      }"
+    >
+      <div align="right"><el-button type="success">创建成果介绍</el-button></div>
+    </router-link>
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -11,36 +21,49 @@
     >
       <el-table-column align="center" label="序号" width="95">
         <template slot-scope="scope">
-          {{ scope.$index }}
+          {{ scope.$index+1 }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="成果信息编号" width="95">
+      <el-table-column align="center" label="成果ID" width="130">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="成果标题描述">
+      <el-table-column label="成果标题描述" width="160">
         <template slot-scope="scope">
           {{ scope.row.title }}
         </template>
       </el-table-column>
-      <el-table-column label="成果类别" width="110" align="center">
+      <el-table-column label="成果参与者" width="260">
         <template slot-scope="scope">
-          {{ scope.row.type }}
+          {{ scope.row.participantMember }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="创建时间" width="200">
+      <el-table-column align="center" label="创建时间" width="220">
         <template slot-scope="scope">
           <i class="el-icon-time" />
-          <span>{{ scope.row.create_time }}</span>
+          <span>{{ scope.row.time }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="成果类别" width="180" align="center">
+        <template slot-scope="scope">
+          {{ type[scope.row.sort] }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="editCarousel(row.id)">
-            编辑
-          </el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(row,$index)">
+        <template slot-scope="{ row, $index }">
+          <router-link
+            :to="{
+              path: '/achievement/form/' + row.id,
+              query: {
+                id: row.id,
+                operate: 2
+              }
+            }"
+          >
+            <el-button type="primary" size="mini">编辑</el-button>
+          </router-link>
+          <el-button size="mini" type="danger" @click="handleDelete(row, $index, row.id)">
             删除
           </el-button>
         </template>
@@ -68,8 +91,21 @@ export default {
   data() {
     return {
       total: 0,
-      list: null,
+      list: [
+        {
+          id: 0,
+          title: '',
+          content: '',
+          time: '',
+          hot: '',
+          sort: '',
+          achieveName: '',
+          participantMember: ''
+        }
+      ],
       listLoading: true,
+      warn: '',
+      type: ['国内外赛事', '科研成果', '涉及领域', '应用实例'],
       listQuery: {
         page: 1,
         limit: 10
@@ -88,12 +124,32 @@ export default {
         this.list = res.data.data.result
       })
     },
-    editCarousel(id) {
-      console.log(id)
-      this.$router.push('/achievement/form/' + id)
-    },
-    creatCarousel() {
-      this.$router.push('/achievement/createform')
+    handleDelete(index, row, id) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          var that = this
+          this.listLoading = true
+          this.$axios
+            .get('http://localhost:8083/achieve/deleteID?id=' + id)
+            .then(function(response) {
+              that.list = response.data
+              that.listLoading = false
+            })
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     }
   }
 }
