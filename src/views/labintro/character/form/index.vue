@@ -64,7 +64,7 @@
         <el-form-item label="email">
           <el-input v-model="form.email" />
         </el-form-item>
-        <!-- <el-form-item>
+        <el-form-item label="照片">
           <el-upload
             class="avatar-uploader"
             action="https://jsonplaceholder.typicode.com/posts/"
@@ -75,7 +75,7 @@
             <img v-if="imageUrl" :src="imageUrl" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item prop="content" label="简介">
           <Tinymce id="tinymceId" ref="editor" :height="400" :value="content" name="tinymac" />
         </el-form-item>
@@ -108,9 +108,8 @@ export default {
         tel: '',
         email: '',
         role: '',
-        area: 0
-        // img_boolean: 0,
-        // img_src: '',
+        area: 0,
+        img: ''
       },
       options1: {
         value1: '',
@@ -138,8 +137,8 @@ export default {
       AreaType: ['普通', '重要'],
       value1: '',
       value2: '',
-      tinymceId: ''
-      // imageUrl: ''
+      tinymceId: '',
+      imageUrl: ''
     }
   },
   created() {
