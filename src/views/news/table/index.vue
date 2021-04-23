@@ -44,12 +44,12 @@
           {{ type[scope.row.sort] }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="创建时间" width="200">
+      <!-- <el-table-column align="center" label="创建时间" width="200">
         <template slot-scope="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.time }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         label="操作"
         align="center"

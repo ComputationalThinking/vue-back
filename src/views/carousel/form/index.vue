@@ -21,16 +21,6 @@
           <el-time-picker v-model="form.date2" type="fixed-time" placeholder="Pick a time" style="width: 100%;" />
         </el-col>
       </el-form-item>
-      <el-form-item label="轮播图类别">
-        <el-select v-model="form.value" placeholder="请选择">
-          <el-option
-            v-for="item in form.options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-      </el-form-item>
       <el-form-item label="轮播图图片">
         <el-upload
           action="#"
@@ -82,7 +72,9 @@
 </template>
 
 <script>
+// import Tinymce from '@/components/Tinymce'
 export default {
+  // components: { Tinymce },
   data() {
     return {
       form: {
@@ -101,9 +93,11 @@ export default {
         value: ''
       },
       dialogImageUrl: '',
+      tinymceId: '',
       dialogVisible: false,
       disabled: false,
-      hideUp: true
+      hideUp: true,
+      imageUrl: ''
     }
   },
   methods: {
@@ -125,6 +119,50 @@ export default {
     },
     handleDownload(file) {
       console.log(file)
+    },
+    dataPost() {
+      this.$confirm('确认是否编辑完毕?', '提示', {
+        confirmButtonText: '提交',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        var that = this
+        this.listLoading = true
+        if (this.operate === 2) {
+          this.form.time = this.date1 + 'T' + this.date2
+          this.getValue(this.value)
+          this.getContent()
+          this.$axios
+            .post('http://localhost:8083/Carousel/UpdataID', this.form)
+            .then(function(response) {
+              // that.message = response.data
+              that.listLoading = false
+            })
+          this.$message({
+            type: 'success',
+            message: '修改成功!'
+          })
+        } else {
+          this.form.time = this.date1 + 'T' + this.date2
+          this.getValue(this.value)
+          this.getContent()
+          this.$axios
+            .post('http://localhost:8083/Carousel/AddID', this.form)
+            .then(function(response) {
+              // that.message = response.data
+              that.listLoading = false
+            })
+          this.$message({
+            type: 'success',
+            message: '添加成功!'
+          })
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消添加'
+        })
+      })
     }
   }
 }

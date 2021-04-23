@@ -5,11 +5,11 @@
         <el-input v-model="form.title" />
       </el-form-item>
       <el-row>
-        <!-- <el-col :span="11">
+        <el-col :span="11">
           <el-form-item label="新闻编号">
             <el-input v-model="form.number" />
           </el-form-item>
-        </el-col> -->
+        </el-col>
         <el-col :span="2" class="line" />
         <el-col :span="11">
           <el-form-item label="新闻作者">
@@ -59,36 +59,31 @@ export default {
       operate: 0,
       content: '',
       form: {
-        title: '',
         id: 0,
-        author: '',
-        time: '',
-        content: '',
-        img_boolean: 0,
-        img_src: '',
-        sort: 0
+        pic: '',
+        page: 1
       },
-      options: {
-        value: '',
-        choice: [{
-          value: '选项1',
-          label: '实验室新闻'
-        }, {
-          value: '选项2',
-          label: '国内动态-国内信息化教育'
-        }, {
-          value: '选项3',
-          label: '国内动态-国内实时活动资讯'
-        }, {
-          value: '选项4',
-          label: '国外动态'
-        }
-        ]
-      },
-      type: ['实验室新闻', '国内动态-国内信息化教育', '国内动态-国内实时活动资讯', '国外动态'],
-      value: '',
-      date1: '',
-      date2: '',
+      // options: {
+      //   value: '',
+      //   choice: [{
+      //     value: '选项1',
+      //     label: '实验室新闻'
+      //   }, {
+      //     value: '选项2',
+      //     label: '国内动态-国内信息化教育'
+      //   }, {
+      //     value: '选项3',
+      //     label: '国内动态-国内实时活动资讯'
+      //   }, {
+      //     value: '选项4',
+      //     label: '国外动态'
+      //   }
+      //   ]
+      // },
+      // type: ['实验室新闻', '国内动态-国内信息化教育', '国内动态-国内实时活动资讯', '国外动态'],
+      // value: '',
+      // date1: '',
+      // date2: '',
       time: '',
       tinymceId: ''
     }
@@ -99,7 +94,7 @@ export default {
     const that = this
     if (this.operate === 2) {
       this.$axios
-        .get('http://localhost:8083/News/giveID?id=' + this.id)
+        .get('http://localhost:8083/carousel/carouselgiveID?id=' + this.id)
         .then(function(response) {
           that.form = response.data
           that.value = that.type[that.form.sort]

@@ -146,18 +146,10 @@ export default {
     }
   },
   created() {
-    // this.fetchData()
     this.listLoading = true
     this.getList()
   },
   methods: {
-    // fetchData() {
-    //   this.listLoading = true
-    //   getList().then(response => {
-    //     this.list = response.data.items
-    //     this.listLoading = false
-    //   })
-    // },
     getList() {
       getMemberList(this.listQuery).then(res => {
         this.listLoading = false
