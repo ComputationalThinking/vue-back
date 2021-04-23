@@ -108,9 +108,11 @@ export default {
         {
           id: 0,
           title: '',
+          author: '',
           content: '',
           time: '',
-          author: '',
+          img_blooean: 0,
+          img_src: '',
           sort: ''
         }
       ],
