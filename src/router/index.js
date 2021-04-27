@@ -183,7 +183,7 @@ export const constantRoutes = [
   {
     path: '/lab',
     component: Layout,
-    redirect: '/lab/form',
+    redirect: '/lab/character/table',
     name: 'Lab',
     meta: { title: '实验室信息管理', icon: 'el-icon-s-help' },
     alwaysShow: true,
@@ -192,7 +192,7 @@ export const constantRoutes = [
         path: 'character',
         name: 'Character',
         component: () => import('@/views/labintro/character/index'),
-        meta: { title: '成员管理', icon: 'table' },
+        meta: { title: '', icon: 'table' },
         children: [
           {
             path: 'table',

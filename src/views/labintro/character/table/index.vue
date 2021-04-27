@@ -29,12 +29,12 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="姓名及出生地" width="200">
+      <el-table-column label="姓名及出生地" width="200" align="center">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column label="身份" width="80">
+      <el-table-column label="身份" width="80" align="center">
         <template slot-scope="scope">
           {{ IdenType[scope.row.identity] }}
           <!-- {{ scope.row.identity }} -->

@@ -32,6 +32,14 @@ export function getMemberList(params) {
   })
 }
 
+export function getCarouselList(params) {
+  return request1({
+    url: '/carousel/getPageData',
+    method: 'get',
+    params
+  })
+}
+
 export function getAchieveList(params) {
   return request1({
     url: '/achieve/getPageData',

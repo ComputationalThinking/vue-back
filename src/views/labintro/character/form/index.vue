@@ -4,28 +4,6 @@
       <el-form-item label="姓名及出生地">
         <el-input v-model="form.name" />
       </el-form-item>
-      <!-- <el-row>
-        <el-col :span="11">
-          <el-form-item label="成员编号">
-            <el-input v-model="form.number" />
-          </el-form-item>
-        </el-col>
-        <el-col :span="2" class="line" />
-        <el-col :span="8">
-          <el-form-item label="出生地">
-            <el-input v-model="form.name" />
-          </el-form-item>
-        </el-col>
-      </el-row> -->
-      <!-- <el-form-item label="创建时间">
-        <el-col :span="11">
-          <el-date-picker v-model="form.date1" type="date" placeholder="Pick a date" style="width: 100%;" />
-        </el-col>
-        <el-col :span="2" class="line">-</el-col>
-        <el-col :span="11">
-          <el-time-picker v-model="form.date2" type="fixed-time" placeholder="Pick a time" style="width: 100%;" />
-        </el-col>
-      </el-form-item> -->
       <el-form-item label="身份">
         <el-select v-model="value1" placeholder="请选择">
           <el-option
@@ -49,12 +27,6 @@
         </el-select>
       </el-form-item>
       <el-form ref="form" :model="form" label-width="120px">
-        <!-- <el-form-item label="职业">
-          <el-input v-model="form.title" />
-        </el-form-item>
-        <el-form-item label="就读/毕业学校">
-          <el-input v-model="form.title" />
-        </el-form-item> -->
         <el-form-item label="现任">
           <el-input v-model="form.role" />
         </el-form-item>
@@ -79,9 +51,6 @@
         <el-form-item prop="content" label="简介">
           <Tinymce id="tinymceId" ref="editor" :height="400" :value="content" name="tinymac" />
         </el-form-item>
-        <!-- <el-form-item label="获奖">
-          <Tinymce ref="editor" :height="400" />
-        </el-form-item> -->
         <el-form-item>
           <el-button type="primary" @click="onSubmit, dataPost()">确定</el-button>
           <el-button @click="onCancel">取消</el-button>
@@ -152,9 +121,6 @@ export default {
           that.form = response.data
           that.value1 = that.IdenType[that.form.identity]
           that.value2 = that.AreaType[that.form.area]
-          // that.time = that.form.time
-          // that.date1 = that.time.substr(0, 10)
-          // that.date2 = that.time.substr(11, 8)
           that.content = that.form.content
         })
     }
