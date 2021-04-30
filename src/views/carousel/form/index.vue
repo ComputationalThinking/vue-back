@@ -18,6 +18,27 @@
       <el-form-item label="描述">
         <el-input v-model="form.content" />
       </el-form-item>
+      <!-- action="https://jsonplaceholder.typicode.com/posts/" -->
+      <el-form-item>
+        <el-upload
+          list-type="picture-card"
+          :before-upload="beforeUpload"
+          :on-preview="handlePictureCardPreview"
+          :action="uploadImgServer"
+          :on-remove="handleRemove"
+          :on-success="handleAvatarSuccess"
+          :limit="imgLimit"
+          :on-exceed="handleExceed"
+          :file-list="fileListFront"
+        >
+          <i class="el-icon-plus" />
+        </el-upload>
+      </el-form-item>
+      <el-form-item>
+        <el-dialog :visible.sync="dialogVisible">
+          <img width="100%" :src="dialogImageUrl" alt="">
+        </el-dialog>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit, dataPost()">确定</el-button>
         <el-button @click="onCancel">取消</el-button>
@@ -51,7 +72,12 @@ export default {
         ]
       },
       PageType: [1, 2],
-      value: ''
+      value: '',
+      dialogImageUrl: '',
+      dialogVisible: false,
+      uploadImgServer: 'http://localhost:8083/carousel/AddImg',
+      imgLimit: 1, // 上传照片数
+      fileListFront: [] // 照片列表
     }
   },
   created() {
@@ -70,6 +96,37 @@ export default {
     }
   },
   methods: {
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
+    },
+    beforeUpload(file) {
+      // // var code = store.state.shop_code
+      // const fd = new FormData()
+      // fd.append('picFile', file)
+      // // fd.append('shop_code', code)
+      const isJPG = file.type === 'image/jpg' || file.type === 'image/jpeg' || file.type === 'image/png'
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isJPG) {
+        this.$message.error('仅支持jpg，png格式的图片！')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
+    },
+    handleAvatarSuccess(res, file) {
+      console.log('file')
+      console.log(file)
+      console.log(URL.createObjectURL(file.raw))
+      this.fileListFront.push(file)
+    },
+    handleExceed() {
+      this.$message.error(`只能选择${this.imgLimit}个文件`)
+    },
     onSubmit() {
       this.$message('submit!')
     },
